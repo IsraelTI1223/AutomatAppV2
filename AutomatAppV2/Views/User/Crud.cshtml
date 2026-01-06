@@ -1,0 +1,105 @@
+﻿@model AutomatApp.Entities.Models.CatUsersModel
+@{
+    ViewBag.Title = "Usuario";
+}
+
+@*<script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+@*@section Breadcrumbs{
+        <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="breadcrumb-item"><a>Configuración</a></li>
+        <li class="breadcrumb-item"><a>Usuarios </a></li>
+    }*@
+
+@using (Html.BeginForm("Crud", "User", FormMethod.Post, new { enctype = "multipart/form" }))
+{
+    <div class="row">
+        <div class="col-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                </div>
+                <div class="card-body">
+                    <div class="mt-1">
+                        @Html.HiddenFor(m => m.IdUsusario)
+                        @Html.LabelFor(m => m.Nombre, new { @class = "control-label", @for = "Nombre" })
+                        @Html.ValidationMessageFor(m => m.Nombre, null, new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+
+                    </div>
+                    <div class="mt-1">
+                        @Html.LabelFor(m => m.ApPaterno, new { @class = "control-label", @for = "ApPaterno" })
+                        @Html.ValidationMessageFor(m => m.ApPaterno, null, new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.ApPaterno, new { @class = "form-control" })
+                    </div>
+                    <div class="mt-1">
+                        @Html.LabelFor(m => m.ApMaterno, new { @class = "control-label" })
+                        @Html.ValidationMessageFor(m => m.ApMaterno, null, new { @class = "text-danger" })
+                        @Html.TextBoxFor(M => M.ApMaterno, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                </div>
+                <div class="card-body">
+                    @Html.LabelFor(m => m.Correo, new { @class = "control-label" })
+                    @Html.ValidationMessageFor(m => m.Correo, null, new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.Correo, new { @class = "form-control" })
+                    <div class="mt-1">
+                        <label class="text-danger">@ViewBag.UsuarioId</label>
+                    </div>
+
+                    @Html.LabelFor(m => m.Perfil, new { @class = "control-label" })
+                    @Html.ValidationMessageFor(m => m.Perfil, null, new { @class = "text-danger" })
+                    @Html.DropDownList("Perfil", null, "Seleccione", htmlAttributes: new { @class = "form-control", id = "IdPerfil", name = "IdPerfil" })
+
+                    <div class="mt-4" id="activoUs">
+                        @Html.LabelFor(m => m.Activo, new { @class = "form-label" })
+                        @Html.CheckBoxFor(m => m.Activo, new { @Checked = "Checked" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-3 float-md-right">
+        <button class="btn btn-secondary btn-uppercase mg-l-5" type="button" id="btnCancelar">
+            Cancelar
+        </button>
+        @{
+            if (Model == null)
+            {
+                <button class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5" type="submit">
+                    Agregar
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-sm pd-x-15 btn-primary btn-uppercase mg-l-5" type="submit">
+                    Actualizar
+                </button>
+            }
+        }
+    </div>
+    <script>
+    $(document).ready(function () {
+        if ($("#IdUsusario").val() != "") {
+            $("#Correo").attr('readonly', true);
+        }
+        else
+        {
+            $("#activoUs").hide();
+        }
+
+        $("#btnCancelar").click(function () {
+        window.location = "@Url.Action("Index", "User")";
+    });
+    });
+    </script>
+}

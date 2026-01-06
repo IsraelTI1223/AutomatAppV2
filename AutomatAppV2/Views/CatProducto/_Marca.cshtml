@@ -1,0 +1,30 @@
+﻿@model AutomatApp.Entities.Models.CatProducto.ProductoViewModel
+@{
+    ViewBag.Title = "_Marca";
+}
+
+<!-- DEPARTAMENTO -->
+<div class="col-6">
+    <div class="card shadow mb-4">
+        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+           role="button" aria-expanded="true" aria-controls="collapseCardExample">
+            <h6 class="m-0 font-weight-bold text-primary">Crear Marca</h6>
+        </a>
+        <div class="collapse show" id="collapseCardExample">
+            <div class="card-body">
+                <form action="@Url.Action("CrearMarca")" method="post" class="mb-4">
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <input type="text" name="Nombre" id="Nombre" class="form-control" required />
+                    </div>                 
+                    <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" id="marActivo" name="activo" value="true" />
+                        <label class="form-check-label" for="marActivo">Activo</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Guardar Marca</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

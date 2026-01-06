@@ -1,0 +1,129 @@
+﻿@model AutomatApp.Entities.Models.CatProducto.ProductoViewModel
+@{
+    ViewBag.Title = "_AltaProducto";
+}
+
+<div class="col-12">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Alta de Productos</h6>
+        </div>
+        <div class="card-body">
+
+            <form action="@Url.Action("CrearProducto")" method="post" class="mb-4">
+                <div class="form-group">
+                    <label>EAN</label>
+                    <input type="text" name="ean" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <input type="text" name="Descripcion" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Clave Unidad</label>
+                    <input type="text" name="claveunidad" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Codigo Sat</label>
+                    <input type="text" name="codigosat" class="form-control" required />
+                </div>
+
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="inventariable" name="inventariable" value="true" />
+                    <label class="form-check-label" for="inventariable">Inventariable</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="facturable" name="facturable" value="true" />
+                    <label class="form-check-label" for="facturable">Facturable</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="disponible_compra" name="disponible_compra" value="true" />
+                    <label class="form-check-label" for="disponible_compra">Disponible compra</label>
+                </div>
+
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="Permite_Devolucion" name="Permite_Devolucion" value="true" />
+                    <label class="form-check-label" for="Permite_Devolucion">Permite devolucion</label>
+                </div>
+
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="activo" name="Activo" value="true" />
+                    <label class="form-check-label" for="depactivo">activo</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="iva" name="iva" value="true" />
+                    <label class="form-check-label" for="iva">IVA</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="ieps" name="ieps" value="true" />
+                    <label class="form-check-label" for="ieps">IEPS</label>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label>Marca</label>
+                    <select name="Id_Marca" id="Id_Marca" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var marca in Model.MarcaModel)
+                        {
+                            <option value="@marca.Id">@marca.Nombre</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Proveedor</label>
+                    <select name="Id_Proveedor" id="Id_Proveedor" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var prov in Model.ProvModel)
+                        {
+                            <option value="@prov.Id">@prov.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Departamento</label>
+                    <select name="Departamento" id="Departamento" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var dep in Model.DepartamentoModel)
+                        {
+                            <option value="@dep.Id">@dep.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select class="form-control" id="Categoria" name="Categoria">
+                        <option value="">Seleccione...</option>
+                    </select>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary mt-3">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $('#Departamento').change(function () {
+          var departamentoId = $(this).val();
+          $('#Categoria').empty().append('<option value="">Cargando...</option>');
+
+          if (departamentoId) {
+              $.getJSON('@Url.Action("GetCategoriasPorDepartamento", "CatProducto")', { departamentoId: departamentoId }
+               , function (data)
+              {
+                   $('#Categoria').empty().append('<option value="">Seleccione...</option>');
+                   $.each(data, function (i, Categoria) {
+                      $('#Categoria').append($('<option>', { value: Categoria.Id, text: Categoria.Nombre }));
+                  });
+              });
+          } else {
+              $('#Categoria').empty().append('<option value="">-- Selecciona un departamento primero --</option>');
+          }
+      });
+
+</script>

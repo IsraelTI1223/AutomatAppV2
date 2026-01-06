@@ -1,0 +1,76 @@
+﻿@model AutomatApp.Entities.Models.CatWH.WHProductModel
+@{
+    ViewBag.Title = "_AltaAlmacenes";
+}
+
+
+<div class="col-12">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Alta</h6>
+        </div>
+        <div class="card-body">
+
+            <form action="@Url.Action("CrearWH")" method="post" class="mb-4">
+                <div class="form-group">
+                    <label>WH</label>
+                    <input type="text" name="wh" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <input type="text" name="Descripcion" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Descripcion Corta</label>
+                    <input type="text" name="Des_Corta" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Direccion calle y num</label>
+                    <input type="text" name="Direccion_calleynum" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Colonia</label>
+                    <input type="text" name="Direccion_Colonia" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Codigo Postal</label>
+                    <input type="text" name="Direccion_CP" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Entidad</label>
+                    <input type="text" name="Direccion_Entidad" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <input type="text" name="Direccion_Estado" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>RFC</label>
+                    <input type="text" name="RFC" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Razon Social</label>
+                    <input type="text" name="Razon_Social" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Telefono</label>
+                    <input type="text" name="Telefono_1" class="form-control" required />
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="instalada" name="instalada" value="true" />
+                    <label class="form-check-label" for="instalada">activa</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="inventario" name="inventario" value="true" />
+                    <label class="form-check-label" for="inventario">inventario</label>
+                </div>
+                               
+                <button type="submit" class="btn btn-primary mt-3">Guardar Almacen</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

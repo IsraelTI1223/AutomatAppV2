@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <h3 class="mb-4 text-center">Catalogo de Warehouse</h3>
+
+    <!-- Pestañas -->
+    <ul class="nav nav-tabs" id="formTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="categoria-tab" data-bs-toggle="tab" data-bs-target="#altawh" type="button" role="tab">Alta de Warehouse</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="marca-tab" data-bs-toggle="tab" data-bs-target="#wh" type="button" role="tab">Warehouse</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="marca-tab" data-bs-toggle="tab" data-bs-target="#asignacion" type="button" role="tab">Asignacion de Alcances</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="alta-tab" data-bs-toggle="tab" data-bs-target="#alcances" type="button" role="tab">Alcances</button>
+        </li>
+    </ul>
+
+    <br />
+    <!-- Contenido -->
+    <div class="tab-content" id="formTabsContent">
+        <!-- TAB 1 -->
+        <div class="tab-pane fade show active" id="altawh" role="tabpanel">
+            <div class="row">
+                @Html.Partial("_AltaAlmacenes")
+            </div>
+        </div>
+
+        <!-- TAB 2 -->
+        <div class="tab-pane fade" id="wh" role="tabpanel">
+            <div class="row">
+                @Html.Partial("_Almacenes")
+            </div>
+        </div>
+
+        <!-- TAB 3 -->
+        <div class="tab-pane fade" id="asignacion" role="tabpanel">
+            <div class="row">
+                @*@Html.Partial("_Marca")*@
+            </div>
+        </div>
+
+        <!-- TAB 4 -->
+        <div class="tab-pane fade" id="alcances" role="tabpanel">
+            <div class="row">
+                @*@Html.Partial("_AltaProducto")*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Custom scripts for all pages-->
+<script src="~/assets/vendor/jquery/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+@*<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+<!-- Core plugin JavaScript-->
+<script src="~/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Bootstrap JS -->
+
+<script src="~/assets/js/sb-admin-2.min.js"></script>
+<!-- Page level plugins -->
+<script src="~/assets/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level custom scripts -->
+<script src="~/assets/js/demo/datatables-demo.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const filasOriginales = Array.from(document.querySelectorAll("#tablaCategoria tbody tr"));
+        let filas = [...filasOriginales]; // copia para filtrar
+        const filasPorPagina = 10;
+        let paginaActual = 1;
+
+        function mostrarPagina(pagina) {
+            const inicio = (pagina - 1) * filasPorPagina;
+            const fin = inicio + filasPorPagina;
+
+            filas.forEach((fila, index) => {
+                fila.style.display = (index >= inicio && index < fin) ? "" : "none";
+            });
+
+            renderizarBotones(pagina);
+        }
+
+        function renderizarBotones(pagina) {
+            const totalPaginas = Math.ceil(filas.length / filasPorPagina);
+            const contenedor = document.getElementById("paginacion");
+            contenedor.innerHTML = "";
+
+            if (totalPaginas <= 1) return;
+
+            // Botón anterior
+            const prev = document.createElement("button");
+            prev.textContent = "Anterior";
+            prev.className = "btn btn-outline-primary mx-1";
+            prev.disabled = pagina === 1;
+            prev.onclick = () => mostrarPagina(pagina - 1);
+            contenedor.appendChild(prev);
+
+            // Números de página
+            for (let i = 1; i <= totalPaginas; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                btn.className = `btn mx-1 ${i === pagina ? "btn-primary" : "btn-outline-primary"}`;
+                btn.onclick = () => mostrarPagina(i);
+                contenedor.appendChild(btn);
+            }
+
+            // Botón siguiente
+            const next = document.createElement("button");
+            next.textContent = "Siguiente";
+            next.className = "btn btn-outline-primary mx-1";
+            next.disabled = pagina === totalPaginas;
+            next.onclick = () => mostrarPagina(pagina + 1);
+            contenedor.appendChild(next);
+        }
+
+        // 🔍 Buscar productos en tiempo real
+        document.getElementById("buscar").addEventListener("keyup", function () {
+            const filtro = this.value.toLowerCase();
+
+            filas = filasOriginales.filter(fila =>
+                fila.textContent.toLowerCase().includes(filtro)
+            );
+
+            filasOriginales.forEach(fila => fila.style.display = "none");
+
+            paginaActual = 1;
+            mostrarPagina(paginaActual);
+        });
+
+        mostrarPagina(paginaActual);
+    });
+
+    // Script para mover entre pestañas
+    document.querySelectorAll('.next-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const activeTab = document.querySelector('.nav-link.active');
+            const nextTab = activeTab.parentElement.nextElementSibling?.querySelector('.nav-link');
+            if (nextTab) new bootstrap.Tab(nextTab).show();
+        });
+    });
+
+    document.querySelectorAll('.prev-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const activeTab = document.querySelector('.nav-link.active');
+            const prevTab = activeTab.parentElement.previousElementSibling?.querySelector('.nav-link');
+            if (prevTab) new bootstrap.Tab(prevTab).show();
+        });
+    });
+
+
+
+</script>
+
+
+
+

@@ -1,0 +1,238 @@
+﻿@using AutomatApp.Entities.Models
+@model UsuarioModel
+
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon">
+            <!--<i class="fas fa-laugh-wink"></i>-->
+            <!--<img class="rounded-circle" src="img/logo.png"-->
+            <img class="img-fluid px-6 px-sm-6 mt-4 mb-4" style="width: 5rem;" src="" alt="...">
+        </div>
+        <div class="sidebar-brand-text mx-3">Automat App</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/Home/Index">
+            <!--<i class="fas fa-fw fa-bell"></i>-->
+            <span>Panel de Administracion</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Modulos
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+
+    @if (Model.Permisos != null)
+    {
+        foreach (var menu1 in Model.Permisos.OrderBy(x => x.Orden))
+        {
+            if (menu1.SubModuloHijos == null || menu1.SubModuloHijos.Count == 0)
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#@menu1.Modulo"
+                       aria-expanded="true" aria-controls="@menu1.Modulo">
+                        <i class="@menu1.IconoBase"></i><span>@menu1.Modulo</span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#@menu1.Modulo"
+                       aria-expanded="true" aria-controls="@menu1.Modulo">
+                        <i class="@menu1.IconoBase"></i><span>@menu1.Modulo</span>
+                    </a>
+                    <div id="@menu1.Modulo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Sub modulos:</h6>
+                            @foreach (var menu2 in menu1.SubModuloHijos.OrderBy(x => x.Orden))
+                            {
+
+                                if (menu2.SubModuloHijos == null || menu2.SubModuloHijos.Count == 0)
+                                {
+                                    <a class="collapse-item" href="@Url.Action(menu2.Componente)">@menu2.Modulo</a>
+
+                                }
+                                else
+                                {
+                                  <li class="nav-item">
+                                      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#@menu2.Modulo"
+                                         aria-expanded="true" aria-controls="@menu2.Modulo">
+                                          <i class="@menu2.IconoBase"></i><span>@menu2.Modulo</span>
+                                      </a>
+                                      <div id="@menu2.Modulo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                          <div class="bg-white py-2 collapse-inner rounded">
+                                              <h6 class="collapse-header">Sub modulos:</h6>
+                                              @foreach (var menu3 in menu2.SubModuloHijos.OrderBy(x => x.Orden))
+                                              {
+
+                                                  if (menu3.SubModuloHijos == null || menu3.SubModuloHijos.Count == 0)
+                                                  {
+                                                      <a class="collapse-item" href="@Url.Action(menu3.Componente)">@menu3.Modulo</a>
+                                                  }
+                                                  else
+                                                  {
+                                                    <li class="nav-item">
+                                                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#@menu3.Modulo"
+                                                           aria-expanded="true" aria-controls="@menu3.Modulo">
+                                                            <i class="@menu3.IconoBase"></i><span>@menu3.Modulo</span>
+                                                        </a>
+                                                        <div id="@menu3.Modulo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                                            <div class="bg-white py-2 collapse-inner rounded">
+                                                                <h6 class="collapse-header">Sub modulos:</h6>
+                                                                @foreach (var menu4 in menu3.SubModuloHijos.OrderBy(x => x.Orden))
+                                                                {
+
+                                                                    if (menu4.SubModuloHijos == null || menu4.SubModuloHijos.Count == 0)
+                                                                    {
+                                                                        <a class="collapse-item" href="@Url.Action(menu4.Componente)">@menu4.Modulo</a>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                       }
+                                  }
+                                              </div>
+                                              </div>
+                                              </li>
+                                }
+
+                            }
+                            </div>
+                            </div>
+                            </li>
+                        }
+                    }
+                }
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+    <!-- Sidebar Message -->
+    @*<div class="sidebar-card d-none d-lg-flex">
+            <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
+            <p class="text-center mb-2"><strong>APP JEQMX</strong> Visita nuestra pagina Web JQMX!</p>
+            <a class="btn btn-success btn-sm" href="https://jequimex.com/">Go!</a>
+        </div>*@
+
+</ul>
+<!-- End of Sidebar -->
+      
+   
+
+@*<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom fixed-top">
+        <div class="container-fluid">
+            <button class="btn btn-outline-primary d-lg-none" id="btn-toggle-sidebar"><i class="bi bi-list"></i></button>
+            <img src="~/assets/img/LogoRFP_icon.png" /><a class="navbar-brand ms-2" href="#">&nbsp;Automat <span>APP</span></a>
+            <div class="dropdown ms-auto">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    Usuario
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#"><p class="mg-b-25 tx-12 tx-color-03">@Model.Nombre</p></a></li>
+                    <li><a class="dropdown-item" href="#"><p class="mg-b-25 tx-12 tx-color-03">@Model.Perfil</p></a></li>
+                    <li><a class="dropdown-item" href="#"><h6 class="tx-semibold mg-b-5">@Model.Correo</h6></a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="/Account/SignOut">Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>*@
+
+
+@*<aside class="sidebar d-lg-block" id="sidebar">
+        <div class="p-3">
+            <h6 class="text-muted"></h6>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
+                <hr>
+                @if (Model.Permisos != null)
+                {
+                    foreach (var menu1 in Model.Permisos.OrderBy(x => x.Orden))
+                    {
+                        if (menu1.SubModuloHijos == null || menu1.SubModuloHijos.Count == 0)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#menu1" role="button" aria-expanded="false" aria-controls="menu1"><i class="@menu1.IconoBase"></i> @menu1.Modulo</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#menu1" role="button" aria-expanded="false" aria-controls="menu1"><i class="@menu1.IconoBase"></i> @menu1.Modulo</a>
+                                <div class="collapse" id="menu1">
+                                    <ul class="nav flex-column ms-3 mt-2">
+                                        @foreach (var menu2 in menu1.SubModuloHijos.OrderBy(x => x.Orden))
+                                        {
+
+                                            if (menu2.SubModuloHijos == null || menu2.SubModuloHijos.Count == 0)
+                                            {
+                                                <a class="nav-link" href="@Url.Action(menu2.Componente)">
+                                                <li class="@menu2.IconoBase"></li>&nbsp;@menu2.Modulo
+                                                </a>
+                                            }
+
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+
+            <hr>
+            <div class="small text-muted">Atajos</div>
+            <button class="btn btn-sm btn-outline-secondary mt-2 w-100" id="btn-new">+ Nueva entrada</button>
+        </div>
+    </aside>*@
+
+@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Manejo sidebar en pantallas pequeñas
+        const sidebar = document.getElementById('sidebar');
+        const btnToggle = document.getElementById('btn-toggle-sidebar');
+        btnToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
+    </script>*@
+
+
+<script src="~/assets/vendor/jquery/jquery.min.js"></script>
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="~/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="~/assets/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="~/assets/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="~/js/demo/chart-area-demo.js"></script>
+<script src="~/js/demo/chart-pie-demo.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

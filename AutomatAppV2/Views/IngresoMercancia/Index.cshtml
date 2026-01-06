@@ -1,0 +1,246 @@
+﻿@model AutomatApp.Entities.Models.IngresioMercancia.IngresoViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="col-12">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Ingreso de Mercancia</h6>
+        </div>
+        <div class="card-body">
+
+            <form id="formIngreso" class="mb-4">
+                <div class="form-group">
+                    <label>WH</label>
+                    <select name="wh" id="wh" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var marca in Model.WHModels)
+                        {
+                            <option value="@marca.WH">@marca.Descripcion</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Proveedor</label>
+                    <select name="Id_Proveedor" id="Id_Proveedor" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var prov in Model.provModels)
+                        {
+                            <option value="@prov.Id">@prov.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>TipoMovimiento</label>
+                    <select name="TipoMovimiento" id="TipoMovimiento" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var dep in Model.movimientoInventarioModels)
+                        {
+                            <option value="@dep.id_Tipo_mov">@dep.Descripcion</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha Entrada</label>
+                    <input type="date" name="fecha" id="fecha" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label>Factura</label>
+                    <input type="text" name="factura" id="factura" class="form-control" required />
+                </div>
+                <br />
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalProducto">
+                    Agregar Producto
+                </button>
+                <br />
+                <br />
+                <table class="table table-bordered" id="tablaProductos" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>PRODUCTO</th>
+                            <th>CANTIDAD</th>
+                            <th>COSTO</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>PRODUCTO</th>
+                            <th>CANTIDAD</th>
+                            <th>COSTO</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                    <tbody></tbody>
+                </table>
+                <br />
+                <button type="submit" id="btnCargar" class="btn btn-success">Cargar</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalProducto" tabindex="-1" role="dialog" aria-labelledby="modalProductoLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalProductoLabel">Agregar Producto</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>PRODUCTO</label>
+                    <select name="nombreProducto" id="nombreProducto" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        @foreach (var marca in Model.productoModels)
+                        {
+                            <option value="@marca.ean">@marca.Descripcion</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Costo</label>
+                    <input type="number" name="costo" id="costo" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Cantidad</label>
+                    <input type="number" name="cantidad" id="cantidad" class="form-control" required />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnAgregar">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {    
+    <script>
+        let productos = [];
+
+        $("#btnAgregar").click(function () {            
+            const nombreProducto = $("#nombreProducto").val();
+            /*const nombreProducto = $("#nombreProducto option:selected").text();*/
+            const cantidad = parseInt($("#cantidad").val());
+            const costo = parseFloat($("#costo").val());
+
+            if (!nombreProducto || !cantidad || !costo) {
+                alert("Completa todos los campos del producto");
+                return;
+            }
+
+            const producto = { PRODUCTO: nombreProducto, CANTIDAD: cantidad, COSTO: costo };
+            productos.push(producto);
+
+            console.log(productos);
+
+            actualizarTabla();
+            $("#modalProducto").modal("hide");
+            //$("#nombreProducto  option:selected").text("");
+            $("#nombreProducto").val("");
+            $("#cantidad").val("");
+            $("#costo").val("");
+        });
+
+        function actualizarTabla() {
+            const tbody = $("#tablaProductos tbody");
+            tbody.empty();
+
+            productos.forEach((p, i) => {
+                const total = (p.CANTIDAD * p.COSTO).toFixed(2);
+                tbody.append(`
+                    <tr>
+                        <td>${p.PRODUCTO}</td>
+                        <td>${p.CANTIDAD}</td>
+                        <td>${p.COSTO.toFixed(2)}</td>
+                        <td>${total}</td>
+                        <td><button class='btn btn-danger btn-sm' onclick='eliminar(${i})'>X</button></td>
+                    </tr>
+                `);
+            });
+        }
+
+        function eliminar(index) {
+            productos.splice(index, 1);
+            actualizarTabla();
+        }
+
+        $("#btnCargar").click(function (e) {
+            e.preventDefault(); // Evita que se recargue la página
+
+            swal({
+                title: 'Cargar Inventario',
+                text: "¿Seguro de cargar inventario?",
+                icon: "warning",
+                buttons: {
+                    cancel: "Cancelar",
+                    catch: {
+                        text: "Aceptar",
+                        value: true
+                    }
+                },
+            }).then((resp) => {
+                if (resp) {
+
+            // Obtener datos de la tabla en Matriz           
+            const filas = document.querySelectorAll('#tablaProductos tbody tr');
+            const matriz = Array.from(filas).map(fila =>
+                Array.from(fila.querySelectorAll('td')).map(td =>
+                    td.querySelector('input') ? td.querySelector('input').value : td.textContent.trim()
+                )
+            );
+
+            const Prods = matriz.map(fila => ({                
+                ean: fila[0],   // Columna 1
+                Cantidad: parseInt(fila[1]),  // Columna 2
+                Costo: parseFloat(fila[2])    // Columna 3
+            }));
+
+
+            console.log(Prods);
+
+            // Obtener datos del formulario
+            var datosFormulario = {
+                WH: $('#wh').val(),
+                Id_Proveedor: $('#Id_Proveedor').val(),
+                Dia_Operacion: $('#fecha').val(),
+                TipoMovimiento: $('#TipoMovimiento').val(),
+                Factura: $('#factura').val(),
+            };
+
+            console.log(datosFormulario); // Verifica los datos antes de enviarlos
+
+            // Validar datos antes de enviar
+            if (Prods.length === 0) {
+                alert("Debe agregar al menos un producto.");
+                return;
+            }
+
+            //  Enviar al controlador
+            $.ajax({
+                url: '/IngresoMercancia/CrearIngreso',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    Formulario: datosFormulario,
+                    Productos: Prods
+                }),
+                success: function (resp) {                   
+                    swal('', resp.Message, "success");
+                },
+                error: function (err) {
+                    swal('', err.Message, "error");
+                }
+            });
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "_IngresoModal";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalProducto" tabindex="-1" role="dialog" aria-labelledby="modalProductoLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalProductoLabel">Agregar Producto</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre Producto</label>
+                    <input type="text" id="nombreProducto" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Cantidad</label>
+                    <input type="number" id="cantidad" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Precio Unitario</label>
+                    <input type="number" id="precio" class="form-control" step="0.01" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnAgregar">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
